@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Menu from "./components/Menu";
+import TabelaLivros from "./components/TabelaLivros";
+import CadastrarLivros from "./components/CadastrarLivros";
+import NotFound from "./components/NotFound";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    livros: [
+      {
+        id: 1,
+        isbn: "978-85-7522-403-8",
+        titulo: "HTML5 - 2ª Edição",
+        autor: "Maurício Samy Silva",
+      },
+      {
+        id: 2,
+        isbn: "978-85-7522-807-4",
+        titulo: "Introdução ao Pentest",
+        autor: "Daniel Moreno",
+      },
+      {
+        id: 3,
+        isbn: "978-85-7522-780-8",
+        titulo: "Internet das Coisas para Desenvolvedores",
+        autor: "Ricardo da Silva Ogliari",
+      },
+    ],
+  };
+  render() {
+    return (
+      <Router>
+        <Menu />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            render={() => <TabelaLivros livros={this.state.livros} />}
+          />
+          <Route exact path="/cadastrar" render={() => <CadastrarLivros />} />
+          <Route component={NotFound} />
+        </Routes>
+      </Router>
+    );
+  }
 }
 
 export default App;
