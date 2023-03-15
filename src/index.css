@@ -13,13 +13,14 @@ body {
 }
 #tudo {
   background: #fff;
-  padding: 10px 20px;
+  padding: 0 20px 20px 20px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
 .menu ul {
-  padding: 0;
+  padding: 0 0 0 20px;
+  margin: 0;
 }
 .menu li {
   list-style: none;
@@ -32,13 +33,31 @@ body {
 }
 a,
 a:visited {
-  color: #ff7300;
+  color: #ffffff;
 }
 a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+.menu {
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  background: #21537c;
+  line-height: 50px;
+}
+.btnLink {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  background: transparent;
+  color: #ff7300;
+  border: none;
+  text-decoration: underline;
+}
+.btnLink:hover {
   color: #f3974c;
   text-decoration: none;
 }
-
 .tabela {
   border-collapse: collapse;
   border: 1px solid #ccc;
@@ -116,13 +135,13 @@ label[for="ftitulo"] {
   width: 100%;
   padding: 6px 20px;
   color: #fff;
-  background-color: #28a725;
-  border-color: #28a725;
+  background-color: #21537c;
+  border-color: #21537c;
 }
 .cadastrar:hover {
   color: #fff;
-  background-color: #218838;
-  border-color: #1e7e34;
+  background-color: #123552;
+  border-color: #123552;
 }
 ::placeholder {
   color: red;
