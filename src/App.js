@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Navigate,
+  useParams,
+} from "react-router-dom";
 import Menu from "./components/Menu";
 import TabelaLivros from "./components/TabelaLivros";
 import CadastrarLivros from "./components/CadastrarLivros";
@@ -28,20 +34,64 @@ class App extends Component {
       },
     ],
   };
+
+  inserirLivro = (livro) => {
+    livro.id = this.state.livros.length + 1;
+    this.setState({
+      livros: [...this.state.livros, livro],
+    });
+  };
+
+  editarLivro = (livro) => {
+    const index = this.state.livros.findIndex((p) => p.id === livro.id);
+    const livros = this.state.livros
+      .slice(0, index)
+      .concat(this.state.livros.slice(index + 1));
+    const newLivros = [...livros, livro].sort((a, b) => a.id - b.id);
+    this.setState({
+      livros: newLivros,
+    });
+  };
+
+  removerLivro = (livro) => {
+    if (window.confirm("Remover esse livro?")) {
+      const livros = this.state.livros.filter((p) => p.isbn !== livro.isbn);
+      this.setState({ livros });
+    }
+  };
+
   render() {
+    const Wrapper = (props) => {
+      const { isbnLivro } = useParams();
+      const livro = this.state.livros.find((livro) => livro.isbn === isbnLivro);
+      if (livro) {
+        return <CadastrarLivros livro={livro} editarLivro={this.editarLivro} />;
+      } else {
+        return <Navigate replace to="/" />;
+      }
+    };
+
     return (
-      <Router>
+      <BrowserRouter>
         <Menu />
         <Routes>
           <Route
-            exact
             path="/"
-            render={() => <TabelaLivros livros={this.state.livros} />}
-          />
-          <Route exact path="/cadastrar" render={() => <CadastrarLivros />} />
-          <Route component={NotFound} />
+            element={<TabelaLivros livros={this.state.livros} removerLivro={this.removerLivro} />}
+          ></Route>
+          <Route
+            path="/cadastrar"
+            element={
+              <CadastrarLivros
+                inserirLivro={this.inserirLivro}
+                livro={{ id: 0, isbn: "", titulo: "", autor: "" }}
+              />
+            }
+          ></Route>
+          <Route path="*" element={<NotFound />}></Route>
+          <Route exact path="/editar/:isbnLivro" element={<Wrapper />}></Route>
         </Routes>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
